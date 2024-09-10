@@ -23,8 +23,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "This is a list of replicas with their sizes for the user clusters in this environment.  ",
       "fieldConfig": {
@@ -85,12 +85,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sql_cluster_replicas",
+          "expr": "mz_cluster_replicas",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -158,8 +158,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "This is the time since the last restart for each of the replicas on the user clusters. Returns to zero with each restart of each replica, whether planned or because of a crash or OOM condition.",
       "fieldConfig": {
@@ -244,13 +244,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum( time() - sql_replica_uptime) by (replica_id, cluster_name, replica_name)",
+          "expr": "sum( time() - mz_replica_uptime) by (replica_id, cluster_name, replica_name)",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -267,8 +267,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "peak utilization on available data",
       "fieldConfig": {
@@ -331,11 +331,11 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "editorMode": "code",
-          "expr": "max_over_time (\n    (\n        (\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( sql_cluster_replica_usage{col=\"used_disk_bytes\", cluster_id=~\"u.+\"} )\n            +\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( sql_cluster_replica_usage{col=\"used_memory_bytes\",cluster_id=~\"u.+\"} )\n        )   \n        /\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( sql_cluster_replica_usage{col=\"total_memory_bytes\",cluster_id=~\"u.+\"} )\n    )[15d:]\n) * 100",
+          "expr": "max_over_time (\n    (\n        (\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( mz_cluster_replica_usage{col=\"used_disk_bytes\", cluster_id=~\"u.+\"} )\n            +\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( mz_cluster_replica_usage{col=\"used_memory_bytes\",cluster_id=~\"u.+\"} )\n        )   \n        /\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( mz_cluster_replica_usage{col=\"total_memory_bytes\",cluster_id=~\"u.+\"} )\n    )[15d:]\n) * 100",
           "instant": false,
           "legendFormat": "{{cluster_name}}.{{replica_name}}",
           "range": true,
@@ -347,8 +347,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "fieldConfig": {
         "defaults": {
@@ -439,11 +439,11 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "editorMode": "code",
-          "expr": "\n    (\n        (\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( sql_cluster_replica_usage{col=\"used_disk_bytes\", cluster_id=~\"u.+\"} )\n            +\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( sql_cluster_replica_usage{col=\"used_memory_bytes\",cluster_id=~\"u.+\"} )\n        )   \n        /\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( sql_cluster_replica_usage{col=\"total_memory_bytes\",cluster_id=~\"u.+\"} )\n    ) * 100",
+          "expr": "\n    (\n        (\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( mz_cluster_replica_usage{col=\"used_disk_bytes\", cluster_id=~\"u.+\"} )\n            +\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( mz_cluster_replica_usage{col=\"used_memory_bytes\",cluster_id=~\"u.+\"} )\n        )   \n        /\n            sum by (cluster_id, cluster_name, replica_id, replica_name) ( mz_cluster_replica_usage{col=\"total_memory_bytes\",cluster_id=~\"u.+\"} )\n    ) * 100",
           "instant": false,
           "legendFormat": "{{cluster_name}}.{{replica_name}}",
           "range": true,
@@ -455,8 +455,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "The percentage of available memory that is in use for each user replica. When CC clusters get above ~90%, they will start spilling to disk and stay there until the disk is exhausted before out-of-memory restarts.",
       "fieldConfig": {
@@ -539,12 +539,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sql_cluster_replica_usage{col=\"memory_percent\", replica_id=~\"^u.*\"}",
+          "expr": "mz_cluster_replica_usage{col=\"memory_percent\", replica_id=~\"^u.*\"}",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -559,8 +559,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "The percentage of available CPU being used by the user replicas. Materialize will often used underutilized CPU cycles for maintenance opportunistically, so a 100% CPU doesn't always indicate CPU starvation for compute tasks, although it can. ",
       "fieldConfig": {
@@ -642,12 +642,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "sql_cluster_replica_usage{col=\"cpu_percent\", replica_id=~\"^u.*\"}",
+          "expr": "mz_cluster_replica_usage{col=\"cpu_percent\", replica_id=~\"^u.*\"}",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -662,8 +662,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "Disk is used by CC compute clusters for spilling memory to disk for optimization. Disk is also used by upsert source replicas for deduplication tracking.  When both memory and disk reach 100%, a replica will restart, and can get caught in an \"OOM Loop\"",
       "fieldConfig": {
@@ -745,12 +745,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sql_cluster_replica_usage{col=\"disk_percent\", replica_id=~\"^u.*\"}",
+          "expr": "mz_cluster_replica_usage{col=\"disk_percent\", replica_id=~\"^u.*\"}",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -765,8 +765,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "Average updates committed ( written to storage layer ) by the source per second. ",
       "fieldConfig": {
@@ -850,13 +850,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(sql_source_statistics{col=\"updates_committed\"}[$__rate_interval])",
+          "expr": "rate(mz_source_statistics{col=\"updates_committed\"}[$__rate_interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -871,8 +871,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "Gap between the known upstream offset and the committed offset. Indicates if commits are keeping up with the source. ",
       "fieldConfig": {
@@ -956,13 +956,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sql_source_statistics{col=\"offset_known\"} - on(source_id, source_name) sql_source_statistics{col=\"offset_committed\"}\n",
+          "expr": "mz_source_statistics{col=\"offset_known\"} - on(source_id, source_name) mz_source_statistics{col=\"offset_committed\"}\n",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -977,8 +977,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "time ( seconds ) that the last rehydration took, per source",
       "fieldConfig": {
@@ -1060,13 +1060,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sql_source_statistics{col=\"rehydration_latency_seconds\"}",
+          "expr": "mz_source_statistics{col=\"rehydration_latency_seconds\"}",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -1081,8 +1081,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "For sinks, shows the difference between messages staged and committed. Could indicate a stuck sink if these messages start backing up.",
       "fieldConfig": {
@@ -1166,13 +1166,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sql_sink_statistics{col=\"messages_staged\"} - on(sink_id, sink_name) sql_sink_statistics{col=\"messages_committed\"}",
+          "expr": "mz_sink_statistics{col=\"messages_staged\"} - on(sink_id, sink_name) mz_sink_statistics{col=\"messages_committed\"}",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -1187,8 +1187,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "For each object, how many seconds behind the current time was the last update",
       "fieldConfig": {
@@ -1274,13 +1274,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sql_object_freshness{col=\"approx_lag_ms\"} / 1000",
+          "expr": "mz_object_freshness{col=\"approx_lag_ms\"} / 1000",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -1295,8 +1295,8 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "edpuvus67ylfkf"
+        "type": "thanos",
+        "uid": ""
       },
       "description": "For each user cluster, what was the maximum latency observed for an ad-hoc query in the last 3 days. This comes from the query time collected in the mz_internal.mz_recent_activity_log_redacted table. ",
       "fieldConfig": {
@@ -1380,13 +1380,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "edpuvus67ylfkf"
+            "type": "thanos",
+            "uid": ""
           },
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sql_query_latency{col=\"max_latency\"}",
+          "expr": "mz_query_latency{col=\"max_latency\"}",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
